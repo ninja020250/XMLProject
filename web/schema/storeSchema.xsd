@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.store.com"
+           xmlns="http://www.store.com"
+           xmlns:target="http://www.brands.com"
+           elementFormDefault="qualified">
+    
+    <xs:import namespace="http://www.brands.com" schemaLocation="brands.xsd" />
+        <!-- Declare URL -->
+    <xs:simpleType name="URLDeclare">
+        <xs:restriction base="xs:string">
+            <!--<xs:pattern value="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"/>-->
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare URL -->
+    
+    <xs:simpleType name="ID">
+        <xs:restriction base="xs:long">
+            
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="Store">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="StoreName" type="xs:string"/>
+                <xs:element name="Description" type="xs:string"/>
+                <xs:element name="HomeUrl" type="URLDeclare"/>
+                <xs:element ref="target:ListBrand"  />        
+            </xs:sequence>
+            <xs:attribute name="StoreID" type="ID" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<websites>
+    <website host="https://ben.com.vn">
+        <XPathGetURLOfCategory xpath="//*[@id='ajax-temp-pro']/div[@class='wrap-left']/div[@class='pa-list temp-tree']/div[@class='filter']/a">
+        </XPathGetURLOfCategory>
+        <XPathAccessMonitorCategory xpath="//*[@id='mega-parent']/li/ul//a[contains(@href,'man-hinh-may-tinh')]">
+        </XPathAccessMonitorCategory>
+        <XPathGetListCategoryName xpath=".//img">
+        </XPathGetListCategoryName>
+        <XPathGetListProductUri xpath="//*[@class='ls temp-pro-item']/li/p[@class='brand']/a">
+        </XPathGetListProductUri>
+        <XPathCheckPagination xpath="//*[@class='paging-next ico']">
+        </XPathCheckPagination>
+        <XPathGetProductInfo xpath="//*[@id='tab1']//table/tbody//tr[2]/td/table//tr[2]//table//tr">
+        </XPathGetProductInfo>
+    </website>  
+
+</websites>

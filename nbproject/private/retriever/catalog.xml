@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://ww.category.com" uri="www.category.com.not_found_ww.category.com"/>
+    <system systemId="http://www.category.com" uri="www.category.com"/>
+    <system systemId="http://www.brand.com" uri="www.brand.com"/>
+</catalog>

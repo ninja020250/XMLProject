@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.brand.com"
+           xmlns="http://www.brand.com"
+           xmlns:target="http://www.monitors.com"
+           elementFormDefault="qualified"
+>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    <xs:import namespace="http://www.monitors.com" schemaLocation="monitors.xsd" />
+        <!-- Declare ID -->
+    <xs:simpleType name="IDDeclare">
+        <xs:restriction base="xs:long">
+            
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare ID -->
+
+    <xs:element name="Brand">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="BrandName" type="xs:string"/>
+                <xs:element name="Description" type="xs:string"/>
+                <xs:element  ref="target:ListMonitor"  />        
+            </xs:sequence>
+            <xs:attribute name="BrandID" type="IDDeclare" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

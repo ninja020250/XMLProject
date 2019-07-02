@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.monitor.com"
+           xmlns="http://www.monitor.com"
+           elementFormDefault="qualified">
+    
+    <!-- Declare model -->
+    <xs:simpleType name="modelDeclare">
+        <xs:restriction base="xs:string">
+            <!--<xs:pattern value="([a-zA-Z0-9\s])*"/>-->
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare model -->
+    
+    <!-- Declare Price -->
+    <xs:simpleType name="PriceDeclare">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]+|(liên\shệ)"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare Price -->
+    
+    <!-- Declare ID -->
+    <xs:simpleType name="IDDeclare">
+        <xs:restriction base="xs:long">
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare ID -->
+    
+    <!-- Declare URL -->
+    <xs:simpleType name="URLDeclare">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="https://.+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare URL -->
+    
+    <!-- Declare resolution -->
+    <xs:simpleType name="resolutionDeclare">
+        <xs:restriction base="xs:string">
+            <!--            <xs:pattern value="^[_A-z0-9]*((-|\s)*[_A-z0-9])*$"/>-->
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare resolution -->
+    
+    <!-- Declare contrast -->
+    <xs:simpleType name="contrastDeclare">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="^[0-9]+(:)[0-9]+$"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- End Declare contrast -->
+    <xs:element name="Monitor" >
+        <xs:complexType >
+            <xs:all>
+                <xs:element name="model" type="modelDeclare" />
+                <xs:element name="price" type="PriceDeclare" />
+                <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="url" type="URLDeclare" />
+                <xs:element name="screenBackground" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="resolution" type="resolutionDeclare" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="contrast" type="contrastDeclare"  minOccurs="0" maxOccurs="1"/>
+                <xs:element name="brightness" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/> 
+                <xs:element name="responseTime" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="screenColor" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+                <xs:element name="screenView" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="hubs" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="electricalCapacity" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="weight" type="xs:long" minOccurs="0" maxOccurs="1"/>
+            </xs:all>
+            <xs:attribute name="id" type="IDDeclare"/>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>

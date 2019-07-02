@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.monitors.com"
+           xmlns="http://www.monitors.com"
+           xmlns:target = "http://www.monitor.com"
+           elementFormDefault="qualified">
+    
+    <xs:import namespace="http://www.monitor.com" schemaLocation="monitorSchema.xsd" />
+    
+    <xs:element name="ListMonitor">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="target:Monitor" maxOccurs = "unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

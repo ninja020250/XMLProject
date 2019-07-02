@@ -9,8 +9,39 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .container{
+                text-align: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            button{
+                border-radius: 15px;
+                padding: 1rem 1rem;   
+                min-width: 221px;
+                margin: 5px;
+                color: #ffffff;
+            }
+        </style>
     </head>
     <body>
-        <div>TODO write content</div>
+
+        <div class="container">
+            <h1>Bộ cào kích hoạt thủ công dùng để develop</h1>
+            <form action="CrawlServlet">
+                <button style="background-color:  #3498db;" type="submit" name="btnAction" value="phucanh">Click to Crawling PhuCanh.vn</button>
+            </form>
+            <form action="CrawlServlet">
+                <button style="background-color:  #f1c40f;" type="submit" name="btnAction" value="ben">Click to Crawling ben.com.vn</button>
+            </form>
+            <form action="CrawlServlet">
+                <button style="background-color:  #f1c40f;" type="submit" name="btnAction" value="benvalid">Click to Validate ben.com.vn</button>
+            </form>
+            <form action="CrawlServlet">
+                <button style="background-color:  #2ecc71;" type="submit" name="btnAction" value="cpn">Click to Crawling cpn.vn</button>
+            </form>
+        </div>
     </body>
 </html>
