@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/cn8/XML/project/XMLProject/web/schema/brands.xsd</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/web/schema/monitorSchema.xsd</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/web/schema/monitors.xsd</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/utils/TextUtilities.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/crawler/PhuCanhCrawler.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/crawler/CPNCrawler.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/servlet/CrawlServlet.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/jaxb/Monitor.java</file>
             <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/crawler/BenCrawler.java</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/utils/XMLUtilities.java</file>
         </group>
     </open-files>
 </project-private>

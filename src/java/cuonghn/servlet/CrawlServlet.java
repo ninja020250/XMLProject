@@ -8,6 +8,8 @@ package cuonghn.servlet;
 import cuonghn.crawler.CPNCrawler;
 import cuonghn.crawler.BenCrawler;
 import cuonghn.crawler.PhuCanhCrawler;
+import cuonghn.dao.StoreDAO;
+import cuonghn.jaxb.Brand;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -52,6 +54,12 @@ public class CrawlServlet extends HttpServlet {
             } else if ("benvalid".equals(btnAction)) {
                 BenCrawler cpn = new BenCrawler(realPath);
                 cpn.testValidate();
+            } else if ("benSQL".equals(btnAction)) {
+                StoreDAO dao = new StoreDAO();
+                dao.insertNewBrand(new Brand("Chill"));
+            } else if ("clearDB".equals(btnAction)) {
+                StoreDAO dao = new StoreDAO();
+                dao.clearDB();
             } else {
             }
 

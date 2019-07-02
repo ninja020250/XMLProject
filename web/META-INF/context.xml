@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/XMLProject"/>
+<Context path="/XMLProject">
+   <Resource
+    name="xmlProject" type="javax.sql.DataSource" auth="Container"
+    driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    url="jdbc:sqlserver://localhost:1433;databaseName=xmlProject"
+    username="sa"
+    password="nhatcuong123"
+    >
+    </Resource>
+</Context>

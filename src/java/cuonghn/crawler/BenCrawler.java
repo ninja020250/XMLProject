@@ -6,6 +6,7 @@
 package cuonghn.crawler;
 
 
+import cuonghn.dao.StoreDAO;
 import cuonghn.jaxb.Brand;
 import cuonghn.jaxb.ListBrand;
 import cuonghn.jaxb.ListMonitor;
@@ -146,6 +147,8 @@ public class BenCrawler {
         Store storeInvalid = validateStore(store);
         XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/valid.xml", store);
         XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/Invalid.xml", storeInvalid);
+        StoreDAO dao =  new StoreDAO();
+        dao.masterInsertStore(store);
     }
 
     public void run() {
