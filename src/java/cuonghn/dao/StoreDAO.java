@@ -45,17 +45,19 @@ public class StoreDAO {
         } finally {
         }
     }
-public void clearDB( ) {
-       System.out.println("Clear DB...");
-    try {
-        truncateTable("store_product_tbl");
-        truncateTable("product_tbl");
-        truncateTable("brand_tbl");
-        truncateTable("store_tbl");
-    } catch (Exception e) {
+
+    public void clearDB() {
+        System.out.println("Clear DB...");
+        try {
+            truncateTable("store_product_tbl");
+            truncateTable("product_tbl");
+            truncateTable("brand_tbl");
+            truncateTable("store_tbl");
+        } catch (Exception e) {
+        }
     }
-}
-    public void masterInsertStore(Store store) {  
+
+    public void masterInsertStore(Store store) {
         System.out.println("Insert DB ....");
         ListBrand listBrand = store.getListBrand();
         insertNewStore(store);
@@ -105,9 +107,10 @@ public void clearDB( ) {
         try {
             connection = DBUtil.makeDBConnection();
             if (connection != null) {
-                String sql = "INSERT INTO store_tbl(website) VALUES (?);";
+                String sql = "INSERT INTO store_tbl(name, website) VALUES (?, ?);";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, newStore.getHomeUrl());
+                preparedStatement.setString(2, newStore.getHomeUrl());
                 int result = preparedStatement.executeUpdate();
                 if (result > 0) {
                     return true;
@@ -129,37 +132,53 @@ public void clearDB( ) {
         try {
             connection = DBUtil.makeDBConnection();
             if (connection != null) {
-//                String sql = "INSERT INTO product_tbl (model, description,  screenBackground, resolution, contrast,"
-//                        + " brightness, responseTime, screenColor, screenView, hubs ,"
-//                        + "electricalCapacity, weight, brand_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-
-                String sql = "INSERT INTO product_tbl (model, brand_name) VALUES (?,?);";
+                String sql = "INSERT INTO product_tbl (model, description,  screenBackground, resolution, contrast,"
+                        + " brightness, responseTime, screenColor, screenView, hubs,"
+                        + "electricalCapacity, weight, brand_name,imgURL) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//                String sql = "INSERT INTO product_tbl (model, brand_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                 preparedStatement = connection.prepareStatement(sql);
-//                preparedStatement.setString(1, product.getModel());
-//                preparedStatement.setString(2, product.getDescription());
-//                preparedStatement.setString(4, product.getScreenBackground());
-//                preparedStatement.setString(5, product.getResolution());
-//                preparedStatement.setString(6, product.getContrast());
-//                preparedStatement.setFloat(7, (float) product.getBrightness().intValue());
-//                preparedStatement.setInt(8, product.getResponseTime().intValue());
-//                preparedStatement.setString(9, product.getScreenColor());
-//                preparedStatement.setInt(10, product.getScreenView().intValue());
-//                preparedStatement.setString(11, product.getHubs());
-//                preparedStatement.setInt(12, product.getElectricalCapacity().intValue());
-//                preparedStatement.setFloat(13, (float) product.getWeight());
-//                preparedStatement.setString(14, dependency.getBrandName());
-
                 preparedStatement.setString(1, product.getModel());
-                preparedStatement.setString(2, dependency.getBrandName());
+                preparedStatement.setString(2, product.getDescription());
+                preparedStatement.setString(3, product.getScreenBackground());
+                preparedStatement.setString(4, product.getResolution());
+                preparedStatement.setString(5, product.getContrast());
+                if (product.getBrightness() == null) {
+                    preparedStatement.setNull(6, 0);
+                } else {
+                    preparedStatement.setFloat(6, (float) product.getBrightness().intValue());
+                }
+                if (product.getResponseTime() == null) {
+                    preparedStatement.setNull(7, 0);
+                } else {
+                    preparedStatement.setInt(7, product.getResponseTime().intValue());
+                }
+                preparedStatement.setString(8, product.getScreenColor());
+                if (product.getScreenView() == null) {
+                    preparedStatement.setNull(9, 0);
+                } else {
+                    preparedStatement.setInt(9, product.getScreenView().intValue());
+                }
+                preparedStatement.setString(10, product.getHubs());
+                if (product.getElectricalCapacity() == null) {
+                    preparedStatement.setNull(11, 0);
+                } else {
+                    preparedStatement.setInt(11, product.getElectricalCapacity().intValue());
+                }
+                preparedStatement.setString(12, product.getWeight());
+                preparedStatement.setString(13, dependency.getBrandName());
+                preparedStatement.setString(14, product.getImgURL());
+//                preparedStatement.setString(1, product.getModel());
+//                preparedStatement.setString(2, dependency.getBrandName());
                 int result = preparedStatement.executeUpdate();
                 if (result > 0) {
+                    System.out.println("insert thanh cong: " + product.getModel());
                     return true;
                 }
             }
         } catch (Exception e) {
             if (e.getMessage().contains("duplicate key")) {
-                System.out.println("Error: This product existed: "+  product.getUrl());
-                System.out.println("Error: This product existed Model: "+  product.getModel());
+                System.out.println("Error: This product existed: " + product.getUrl());
+                System.out.println("Error: This product existed Model: " + product.getModel());
             } else {
                 e.printStackTrace();
             }

@@ -14,14 +14,22 @@ import cuonghn.wellformer.SyntaxChecker;
  * @author nhatc
  */
 public class TextUtilities {
+
     public static final String EXPRESSION_CONTAINS_NUMBER = ".*\\d.*";
+
     public static String getOnlyNumber(String src) {
         src = src.replaceAll("\\D+", "");
         return src;
     }
 
+       public static String removeWhiteSpace(String src) {
+        src = src.replace(" ", "");
+        return src;
+    }
     public static String removeSymbols(String src) {
         src = src.replace("•", "");
+        src = src.replace("~", "");
+        src = src.replace(",", ".");
         return src;
     }
 
@@ -35,6 +43,19 @@ public class TextUtilities {
         //crop one more time
         src = getBody(src);
         return src;
+    }
+
+    public static String getByExpression(String src, String expression) {
+        String result = "";
+        Pattern pattern = Pattern.compile(expression);
+
+        Matcher matcher = pattern.matcher(src);
+
+        if (matcher.find()) {
+            result = matcher.group();
+        }
+
+        return result;
     }
 
     private static String getBody(String src) {

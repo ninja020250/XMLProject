@@ -14,7 +14,7 @@ and open the template in the editor.
     <!-- Declare model -->
     <xs:simpleType name="modelDeclare">
         <xs:restriction base="xs:string">
-            <!--<xs:pattern value="([a-zA-Z0-9\s])*"/>-->
+            <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
     <!-- End Declare model -->
@@ -22,14 +22,16 @@ and open the template in the editor.
     <!-- Declare Price -->
     <xs:simpleType name="PriceDeclare">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[0-9]+|(liên\shệ)"/>
+        
+            <xs:pattern value="[0-9]+"/>
         </xs:restriction>
     </xs:simpleType>
     <!-- End Declare Price -->
     
     <!-- Declare ID -->
     <xs:simpleType name="IDDeclare">
-        <xs:restriction base="xs:long">
+        <xs:restriction base="xs:float">
+            
         </xs:restriction>
     </xs:simpleType>
     <!-- End Declare ID -->
@@ -45,7 +47,7 @@ and open the template in the editor.
     <!-- Declare resolution -->
     <xs:simpleType name="resolutionDeclare">
         <xs:restriction base="xs:string">
-            <!--            <xs:pattern value="^[_A-z0-9]*((-|\s)*[_A-z0-9])*$"/>-->
+            <xs:pattern value="([0-9]+)( *x *)([0-9]+)"/>
         </xs:restriction>
     </xs:simpleType>
     <!-- End Declare resolution -->
@@ -53,7 +55,7 @@ and open the template in the editor.
     <!-- Declare contrast -->
     <xs:simpleType name="contrastDeclare">
         <xs:restriction base="xs:string">
-            <xs:pattern value="^[0-9]+(:)[0-9]+$"/>
+            <!--<xs:pattern value="^[0-9]+(:)[0-9]+$"/>-->
         </xs:restriction>
     </xs:simpleType>
     <!-- End Declare contrast -->
@@ -73,7 +75,10 @@ and open the template in the editor.
                 <xs:element name="screenView" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="hubs" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="electricalCapacity" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
-                <xs:element name="weight" type="xs:long" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="weight" type="xs:string" minOccurs="0" maxOccurs="1" />
+                <xs:element name="brandName" type="xs:string" minOccurs="1" maxOccurs="1" />
+                <xs:element name="storeName" type="xs:string" minOccurs="1" maxOccurs="1" />
+                <xs:element name="imgURL" type="xs:string" minOccurs="1" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="id" type="IDDeclare"/>
         </xs:complexType>

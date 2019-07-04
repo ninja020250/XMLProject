@@ -47,7 +47,7 @@ public class XJCGenerateJavaObj {
                 }
             });
             sc.forcePackageName("cuonghn.jaxb");
-            File schema = new File("web/schema/storeSchema.xsd");
+            File schema = new File("web/schema/monitorSchema.xsd");
             InputSource is =  new  InputSource(schema.toURI().toString());
             sc.parseSchema(is);
             S2JJAXBModel model =  sc.bind();

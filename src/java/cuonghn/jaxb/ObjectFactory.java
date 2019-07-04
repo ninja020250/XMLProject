@@ -30,38 +30,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Store }
-     * 
-     */
-    public Store createStore() {
-        return new Store();
-    }
-
-    /**
-     * Create an instance of {@link ListBrand }
-     * 
-     */
-    public ListBrand createListBrand() {
-        return new ListBrand();
-    }
-
-    /**
-     * Create an instance of {@link Brand }
-     * 
-     */
-    public Brand createBrand() {
-        return new Brand();
-    }
-
-    /**
-     * Create an instance of {@link ListMonitor }
-     * 
-     */
-    public ListMonitor createListMonitor() {
-        return new ListMonitor();
-    }
-
-    /**
      * Create an instance of {@link Monitor }
      * 
      */

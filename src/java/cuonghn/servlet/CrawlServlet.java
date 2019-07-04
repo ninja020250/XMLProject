@@ -7,6 +7,7 @@ package cuonghn.servlet;
 
 import cuonghn.crawler.CPNCrawler;
 import cuonghn.crawler.BenCrawler;
+import cuonghn.crawler.Mastercrawler;
 import cuonghn.crawler.PhuCanhCrawler;
 import cuonghn.dao.StoreDAO;
 import cuonghn.jaxb.Brand;
@@ -53,13 +54,15 @@ public class CrawlServlet extends HttpServlet {
                 cpn.run();
             } else if ("benvalid".equals(btnAction)) {
                 BenCrawler cpn = new BenCrawler(realPath);
-                cpn.testValidate();
-            } else if ("benSQL".equals(btnAction)) {
-                StoreDAO dao = new StoreDAO();
-                dao.insertNewBrand(new Brand("Chill"));
+                cpn.testValidateAndInsertDB();
             } else if ("clearDB".equals(btnAction)) {
                 StoreDAO dao = new StoreDAO();
                 dao.clearDB();
+            } else if ("masterCraler".equals(btnAction)) {
+           
+            
+                Mastercrawler mscrawler =  new Mastercrawler(realPath);
+                mscrawler.startCrawl();
             } else {
             }
 

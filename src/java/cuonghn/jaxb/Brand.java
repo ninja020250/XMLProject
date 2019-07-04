@@ -1,3 +1,4 @@
+
 package cuonghn.jaxb;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -7,14 +8,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
- * <p>
- * Java class for anonymous complex type.
- *
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -29,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -49,8 +48,7 @@ public class Brand {
     protected ListMonitor listMonitor;
     @XmlAttribute(name = "BrandID", required = true)
     protected long brandID;
-
-    public Brand(String brandName) {
+ public Brand(String brandName) {
         this.brandName = brandName;
     }
 
@@ -66,9 +64,11 @@ public class Brand {
 
     /**
      * Gets the value of the brandName property.
-     *
-     * @return possible object is {@link String }
-     *
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
     public String getBrandName() {
         return brandName;
@@ -76,9 +76,11 @@ public class Brand {
 
     /**
      * Sets the value of the brandName property.
-     *
-     * @param value allowed object is {@link String }
-     *
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
     public void setBrandName(String value) {
         this.brandName = value;
@@ -86,9 +88,11 @@ public class Brand {
 
     /**
      * Gets the value of the description property.
-     *
-     * @return possible object is {@link String }
-     *
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
     public String getDescription() {
         return description;
@@ -96,9 +100,11 @@ public class Brand {
 
     /**
      * Sets the value of the description property.
-     *
-     * @param value allowed object is {@link String }
-     *
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
     public void setDescription(String value) {
         this.description = value;
@@ -106,9 +112,11 @@ public class Brand {
 
     /**
      * Gets the value of the listMonitor property.
-     *
-     * @return possible object is {@link ListMonitor }
-     *
+     * 
+     * @return
+     *     possible object is
+     *     {@link ListMonitor }
+     *     
      */
     public ListMonitor getListMonitor() {
         return listMonitor;
@@ -116,9 +124,11 @@ public class Brand {
 
     /**
      * Sets the value of the listMonitor property.
-     *
-     * @param value allowed object is {@link ListMonitor }
-     *
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ListMonitor }
+     *     
      */
     public void setListMonitor(ListMonitor value) {
         this.listMonitor = value;
@@ -126,7 +136,7 @@ public class Brand {
 
     /**
      * Gets the value of the brandID property.
-     *
+     * 
      */
     public long getBrandID() {
         return brandID;
@@ -134,7 +144,7 @@ public class Brand {
 
     /**
      * Sets the value of the brandID property.
-     *
+     * 
      */
     public void setBrandID(long value) {
         this.brandID = value;

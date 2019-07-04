@@ -1,9 +1,14 @@
+<%-- 
+    Document   : Home
+    Created on : Jul 3, 2019, 2:42:43 PM
+    Author     : nhatc
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,6 +17,12 @@ and open the template in the editor.
 
     </head>
     <body>
+
+        <%--<x:parse var="doc" doc="${requestScope.PRODUCTS}" scope="session"/>--%>
+        <script>
+            products = '${requestScope.PRODUCTS}';
+            console.log(products);
+        </script>
         <section class="home">
             <h1>CHÀO MỪNG ĐẾN TRANG WEB TÌM KIẾM MÀN HÌNH MÁY TÍNH</h1>
             <div class="option-filter-container">
@@ -22,10 +33,12 @@ and open the template in the editor.
                         bạn muốn tìm kiếm một mức giá tốt cho màn hình máy tính dự định mua.
                         tìm kiếm ngay đây, chúng tôi sẽ cho bạn biết nơi bạn nên mua sản phẩm đó
                     </div>
-                    <form action="CrawlServlet">
-                        <input type="text" name="searchValue" value="" />
-                        <button  type="submit" name="btnAction" value="phucanh">Search</button>
+                    <form action="Home.jsp">
+                        <input type="text" name="txtSearchValue"  value="${param.txtSearchValue}"/>
+                        <button  type="submit" >Search</button>
                     </form>
+                    <c:set var="searchValue" value="${param.txtSearchValue}"/>
+
                 </div>
                 <div class="option-filter">
                     <h3>So sánh 2 sản phẩm</h3>
@@ -56,7 +69,15 @@ and open the template in the editor.
                 <button style="background-color:  #c0392b;" type="submit" name="btnAction" value="clearDB">Click to Clear Database</button>
             </form>
         </div>  
+
+       
+            <c:if test="${not empty searchValue}">
+                <c:set var="productList" value="${requestScope.PRODUCTS}" />
+                <c:import var="xsl" url="/styleSheet/productList.xsl" charEncoding="utf-8"/>
+                <x:transform doc="${productList}"  xslt="${xsl}" >
+                    <x:param name = "searchValue" value = "${searchValue}"/>
+                </x:transform>  
+            </c:if>
+
     </body>
 </html>
-
-

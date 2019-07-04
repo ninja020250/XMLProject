@@ -65,9 +65,6 @@ public class ListBrand {
         this.brand = brand;
     }
 
-    public ListBrand() {
-    }
-
     public void Add(Brand newBrand) {
         if (brand == null) {
             brand = new ArrayList<Brand>();
@@ -77,6 +74,9 @@ public class ListBrand {
 
     public void setBrand(List<Brand> brand) {
         this.brand = brand;
+    }
+
+    public ListBrand() {
     }
 
     public List<Brand> getBrand() {

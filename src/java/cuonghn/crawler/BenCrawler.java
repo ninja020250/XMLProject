@@ -5,7 +5,6 @@
  */
 package cuonghn.crawler;
 
-
 import cuonghn.dao.StoreDAO;
 import cuonghn.jaxb.Brand;
 import cuonghn.jaxb.ListBrand;
@@ -13,6 +12,8 @@ import cuonghn.jaxb.ListMonitor;
 import cuonghn.jaxb.Monitor;
 import cuonghn.jaxb.Store;
 import cuonghn.parseData.Internet;
+import cuonghn.utils.Constant;
+import cuonghn.utils.ImageUtils;
 import cuonghn.utils.ParserDom;
 import cuonghn.utils.TextUtilities;
 import cuonghn.utils.XMLUtilities;
@@ -67,7 +68,7 @@ public class BenCrawler {
 //    private jaxb_Categories jaxb_Categories = new jaxb_Categories();
     private int count = 0;
     private String realPath;
-
+    private int totalproduct = 0;
     private String xPathAccessMonitorCategory = "";
     private String xPathGetListCategoryUrl = "";
     private String xPathGetListCategoryName = "";
@@ -85,69 +86,25 @@ public class BenCrawler {
         readConfigFile();
     }
 
-    public void readConfigFile() {
-        InputStream in = null;
-        XMLStreamReader reader = null;
-        String filePath = this.realPath + "WEB-INF/configFile/BenConfig.xml";
-        try {
-            in = new FileInputStream(filePath);
-            reader = XMLUtilities.parserFiletoXMLcursor(in);
-            String xpath = "";
-            while (reader.hasNext()) {
-                int currentCursor = reader.next();
-                if (currentCursor == XMLStreamConstants.START_ELEMENT) {
-                    String currentTagName = reader.getLocalName();
-                    if (currentTagName.equals("website")) {
-                        host = reader.getAttributeValue(null, "host");
-                        System.out.println("host" + host);
-                    } // end if user
-                    else if (currentTagName.equals("XPathGetURLOfCategory")) {
-                        xpath = reader.getAttributeValue(null, "xpath");
-                        this.xPathGetListCategoryUrl = xpath;
-                    } else if (currentTagName.equals("XPathAccessMonitorCategory")) {
-                        xpath = reader.getAttributeValue(null, "xpath");
-                        this.xPathAccessMonitorCategory = xpath;
-                    } else if (currentTagName.equals("XPathGetListCategoryName")) {
-                        xpath = reader.getAttributeValue(null, "xpath");
-                        this.xPathGetListCategoryName = xpath;
-                    } else if (currentTagName.equals("XPathGetListProductUri")) {
-                        xpath = reader.getAttributeValue(null, "xpath");
-                        this.xPathGetListProductUri = xpath;
-                    } else if (currentTagName.equals("XPathCheckPagination")) {
-                        xpath = reader.getAttributeValue(null, "xpath");
-                        this.xPathCheckPagination = xpath;
-                    } else if (currentTagName.equals("XPathGetProductInfo")) {
-                        xpath = reader.getAttributeValue(null, "xpath");
-                        this.xPathGetProductInfo = xpath;
-                    } else {
-                    }
-                }// end if current cursor
-            }
-            if (xPathGetListCategoryUrl != ""
-                    && xPathAccessMonitorCategory != ""
-                    && xPathGetListCategoryName != ""
-                    && xPathGetListProductUri != ""
-                    && xPathCheckPagination != ""
-                    && xPathGetProductInfo != "") {
-                configReady = true;
-                System.out.println("xPathAccessMonitorCategory: " + xPathAccessMonitorCategory);
-                System.out.println("xPathGetListCategoryUrl: " + xPathGetListCategoryUrl);
-                System.out.println("xPathGetListCategoryName: " + xPathGetListCategoryName);
-                System.out.println("xPathGetListProductUri: " + xPathGetListProductUri);
-                System.out.println("xPathCheckPagination: " + xPathCheckPagination);
-                System.out.println("xPathGetProductInfo: " + xPathGetProductInfo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void testValidate() {
+    public void testValidateAndInsertDB() {
+        System.out.println("start validate ... ");
         Store store = unmarshallingStore(realPath + "schema/test.xml");
         Store storeInvalid = validateStore(store);
-        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/valid.xml", store);
-        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/Invalid.xml", storeInvalid);
-        StoreDAO dao =  new StoreDAO();
+        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/Benvalid.xml", store);
+        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/BenInvalid.xml", storeInvalid);
+        StoreDAO dao = new StoreDAO();
+        System.out.println("start insert to DB");
+        dao.masterInsertStore(store);
+    }
+
+    public void validateAndInsertDB(Store store) {
+        System.out.println("start validate ... ");
+//        Store store = unmarshallingStore(realPath + "schema/test.xml");
+        Store storeInvalid = validateStore(store);
+        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/Benvalid.xml", store);
+        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/BenInvalid.xml", storeInvalid);
+        StoreDAO dao = new StoreDAO();
+        System.out.println("start insert to DB");
         dao.masterInsertStore(store);
     }
 
@@ -158,7 +115,7 @@ public class BenCrawler {
                 getLinkMonitorFromCategory();
                 if (uriMonitorFromCategory != null && !uriMonitorFromCategory.equals("")) {
                     if (store == null) {
-                        store = new Store(uriMonitorFromCategory);
+                        store = new Store(host, uriMonitorFromCategory);
                     }
                     getListCategoryUri(uriMonitorFromCategory);
                 }
@@ -167,18 +124,19 @@ public class BenCrawler {
                     for (Map.Entry<String, String> entry : uriCategories.entrySet()) {
                         Brand brand = new Brand(entry.getKey());
                         System.out.println("dang cao: " + entry.getKey() + " " + entry.getValue());
-//
-                     
                         List<String> uris = getListProductUri(entry.getValue());
                         System.out.println("so luong product: " + uris.size());
                         for (int j = 0; j < uris.size(); j++) {
                             count++;
                             try {
-                                Monitor monitor = getProductByUri(uris.get(j));
+                                Monitor monitor = getProductByUri(uris.get(j), brand.getBrandName(), host);
                                 if (monitor != null) {
                                     brand.addMonitor(monitor);
+                                    totalproduct++;
+                                    System.out.println("cao xong product: " + monitor.getModel() + " trong brand: " + brand.getBrandName());
                                 }
                             } catch (Exception e) {
+                                System.out.println("Khong cao duoc trang nay do khong connect vo duoc :" + uris.get(j));
                             }
                         }
                         listBrand.Add(brand);
@@ -189,8 +147,8 @@ public class BenCrawler {
                 System.out.println("Crawler is done his task 0~0");
 
                 XMLUtilities.saveToXML(this.realPath + "WEB-INF/HTMLPAGE/productBen.xml", store);
-//                validateStore(store);
-//                XMLUtilities.saveToXML(this.realPath + "WEB-INF/HTMLPAGE/valid.xml", store);
+                System.out.println("total product: " + totalproduct);
+                validateAndInsertDB(store);
             } catch (Exception e) {
                 System.out.println("Error");
                 e.printStackTrace();
@@ -260,7 +218,7 @@ public class BenCrawler {
         return validated;
     }
 
-    public Monitor getProductByUri(String ProductUri) throws SAXException, ParserConfigurationException, IOException, XPathExpressionException, ParserConfigurationException, ParserConfigurationException, ParserConfigurationException {
+    public Monitor getProductByUri(String ProductUri, String brandName, String currentStore) throws SAXException, ParserConfigurationException, IOException, XPathExpressionException, ParserConfigurationException, ParserConfigurationException, ParserConfigurationException {
 //     String url = Internet.parseStringToUTF8Uri(ProductUri);
         Monitor monitor = null;
         String wellformXML = Internet.parseListHTMLToString(ProductUri);
@@ -282,7 +240,7 @@ public class BenCrawler {
             String hubs = "";
             String electricalCapacity = "";
             String weight = "";
-
+            String imageURL = "";
             NodeList nodeTRChild;
             for (int i = 0; i < trList.getLength(); i++) { // đọc từng cái tr
                 nodeTRChild = trList.item(i).getChildNodes(); // lấy danh sách td của 1 thằng tr nào đó trong list
@@ -299,8 +257,13 @@ public class BenCrawler {
                     }
                 } else if (title.toLowerCase().contains("độ phân giải")) {
                     if (nodeTRChild.item(1) != null) { // vị trí thứ nhất là vị trí của value còn vị trí 0 là title
-                        resolution = nodeTRChild.item(1).getTextContent(); //  get value
-                        resolution = TextUtilities.removeSymbols(resolution); // remove any symbol
+                        resolution = nodeTRChild.item(1).getTextContent().trim(); //  get value
+//                     
+                        resolution = resolution.toLowerCase();
+                        resolution = TextUtilities.removeSymbols(resolution);
+                        resolution = TextUtilities.getByExpression(resolution, Constant.RESOLUTION_REGEX);
+                        resolution = TextUtilities.removeWhiteSpace(resolution);
+                        System.out.println("resolution: " + resolution);
                     }
                 } else if (title.toLowerCase().contains("độ tương phản")) {
                     if (nodeTRChild.item(1) != null) { // vị trí thứ nhất là vị trí của value còn vị trí 0 là title
@@ -343,9 +306,12 @@ public class BenCrawler {
                     }
                 } else if (title.toLowerCase().contains("trọng lượng") || title.toLowerCase().contains("cân nặng")) {
                     if (nodeTRChild.item(1) != null) { // vị trí thứ nhất là vị trí của value còn vị trí 0 là title
-                        weight = nodeTRChild.item(1).getTextContent(); //  get value
+                        weight = nodeTRChild.item(1).getTextContent().trim().toLowerCase(); //  get value
                         weight = TextUtilities.removeSymbols(weight); // remove any symbol
-                        weight = TextUtilities.getOnlyNumber(weight);
+//                        weight = weight.replaceAll(" ", "");
+                        String expression = "(\\d)+\\.*(\\d+)(kg)";
+                        weight = TextUtilities.getByExpression(weight, expression);
+//                        weight = TextUtilities.getOnlyNumber(weight);
                     }
                 }
             } //end for get product infomation from table
@@ -356,25 +322,46 @@ public class BenCrawler {
             if (price.matches(TextUtilities.EXPRESSION_CONTAINS_NUMBER)) {
                 price = TextUtilities.getOnlyNumber(price);// cắt hết chỉ lấy số thôi
             }
-
-            // end lấy giá
-//            tạo Object để lưu giá trị vào 
+            // end lấy giá  
+            exp = "//*[@class='pro-image-large']//img/@src";
+            imageURL = (String) xpath.evaluate(exp, doc, XPathConstants.STRING);
+            String imageName = ImageUtils.getNameImageFromUrl(imageURL);
+            String filePath = new File(realPath).getParentFile().getAbsoluteFile().getParent();
+            boolean isDownloaded = ImageUtils.saveImageByURL(filePath + Constant.IMAGE_FOLDER + imageName, Constant.PROTOCOL + imageURL); //lấy ảnh 
+            System.out.println("lay anh: " + isDownloaded);
+            // lấy ảnh
+            // lấy description
+            exp = "//*[@class='pro-detail']/h1";
+            String description = (String) xpath.evaluate(exp, doc, XPathConstants.STRING);
+            //            tạo Object để lưu giá trị vào 
             if (monitor == null) {
                 monitor = new Monitor(model);
             }
+            monitor.setBrandName(brandName);
             monitor.setUrl(ProductUri); // 
             monitor.setScreenBackground(screenBackground); //  loại màn hình
             monitor.setResolution(resolution); //độ phân giản
             monitor.setContrast(contrast); // độ tương phản
-            monitor.setBrightness(new BigInteger(brightness)); // độ sáng
-            monitor.setResponseTime(new BigInteger(responseTime)); // thời gian phản hồi
+            if (!brightness.equals("")) {
+                monitor.setBrightness(new BigInteger(brightness)); // độ sáng
+            }
+            if (!responseTime.equals("")) {
+                monitor.setResponseTime(new BigInteger(responseTime)); // thời gian phản hồi
+            }
+            if (!screenView.equals("")) {
+                monitor.setScreenView(new BigInteger(screenView)); // góc nhìn
+            }
             monitor.setScreenColor(screenColor); // độ hiển thị màu
-            monitor.setScreenView(new BigInteger(screenView)); // góc nhìn
-            monitor.setHubs(hubs); // cổng kết nối
-            monitor.setElectricalCapacity(new BigInteger(electricalCapacity));
-            monitor.setWeight(Long.parseLong(weight));
-            monitor.setPrice(price);
 
+            monitor.setHubs(hubs); // cổng kết nối
+            if (!electricalCapacity.equals("")) {
+                monitor.setElectricalCapacity(new BigInteger(electricalCapacity));
+            }
+            monitor.setImgURL(filePath + Constant.IMAGE_FOLDER + imageName);
+            monitor.setWeight(weight);
+            monitor.setStoreName(currentStore);
+            monitor.setPrice(price);
+            monitor.setDescription(description);
         }
         return monitor;
     }
@@ -506,4 +493,62 @@ public class BenCrawler {
         }
         return null;
     }
+
+    public void readConfigFile() {
+        InputStream in = null;
+        XMLStreamReader reader = null;
+        String filePath = this.realPath + "WEB-INF/configFile/BenConfig.xml";
+        try {
+            in = new FileInputStream(filePath);
+            reader = XMLUtilities.parserFiletoXMLcursor(in);
+            String xpath = "";
+            while (reader.hasNext()) {
+                int currentCursor = reader.next();
+                if (currentCursor == XMLStreamConstants.START_ELEMENT) {
+                    String currentTagName = reader.getLocalName();
+                    if (currentTagName.equals("website")) {
+                        host = reader.getAttributeValue(null, "host");
+                        System.out.println("host" + host);
+                    } // end if user
+                    else if (currentTagName.equals("XPathGetURLOfCategory")) {
+                        xpath = reader.getAttributeValue(null, "xpath");
+                        this.xPathGetListCategoryUrl = xpath;
+                    } else if (currentTagName.equals("XPathAccessMonitorCategory")) {
+                        xpath = reader.getAttributeValue(null, "xpath");
+                        this.xPathAccessMonitorCategory = xpath;
+                    } else if (currentTagName.equals("XPathGetListCategoryName")) {
+                        xpath = reader.getAttributeValue(null, "xpath");
+                        this.xPathGetListCategoryName = xpath;
+                    } else if (currentTagName.equals("XPathGetListProductUri")) {
+                        xpath = reader.getAttributeValue(null, "xpath");
+                        this.xPathGetListProductUri = xpath;
+                    } else if (currentTagName.equals("XPathCheckPagination")) {
+                        xpath = reader.getAttributeValue(null, "xpath");
+                        this.xPathCheckPagination = xpath;
+                    } else if (currentTagName.equals("XPathGetProductInfo")) {
+                        xpath = reader.getAttributeValue(null, "xpath");
+                        this.xPathGetProductInfo = xpath;
+                    } else {
+                    }
+                }// end if current cursor
+            }
+            if (xPathGetListCategoryUrl != ""
+                    && xPathAccessMonitorCategory != ""
+                    && xPathGetListCategoryName != ""
+                    && xPathGetListProductUri != ""
+                    && xPathCheckPagination != ""
+                    && xPathGetProductInfo != "") {
+                configReady = true;
+                System.out.println("xPathAccessMonitorCategory: " + xPathAccessMonitorCategory);
+                System.out.println("xPathGetListCategoryUrl: " + xPathGetListCategoryUrl);
+                System.out.println("xPathGetListCategoryName: " + xPathGetListCategoryName);
+                System.out.println("xPathGetListProductUri: " + xPathGetListProductUri);
+                System.out.println("xPathCheckPagination: " + xPathCheckPagination);
+                System.out.println("xPathGetProductInfo: " + xPathGetProductInfo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

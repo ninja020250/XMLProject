@@ -95,7 +95,20 @@ public class XMLUtilities implements Serializable {
         }
         return null;
     }
-
+    
+      public static <T> String marsalData(T t) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(t.getClass());
+            Marshaller marshaller = context.createMarshaller();
+            //marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            StringWriter sw = new StringWriter();
+            marshaller.marshal(t, sw);
+            return sw.toString();
+        } catch (JAXBException ex) {
+            return null;
+        }
+    }
+    
     public static String marshallingToString(Monitor monitor) {
         try {
             JAXBContext jaxb = JAXBContext.newInstance(Monitor.class);

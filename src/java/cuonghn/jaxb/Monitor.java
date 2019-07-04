@@ -20,22 +20,25 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
+ *       &lt;all>
  *         &lt;element name="model" type="{http://www.monitor.com}modelDeclare"/>
  *         &lt;element name="price" type="{http://www.monitor.com}PriceDeclare"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="url" type="{http://www.monitor.com}URLDeclare"/>
- *         &lt;element name="screenBackground" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="resolution" type="{http://www.monitor.com}resolutionDeclare"/>
- *         &lt;element name="contrast" type="{http://www.monitor.com}contrastDeclare"/>
- *         &lt;element name="brightness" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="responseTime" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="screenColor" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="screenView" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="hubs" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="electricalCapacity" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="weight" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
+ *         &lt;element name="screenBackground" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="resolution" type="{http://www.monitor.com}resolutionDeclare" minOccurs="0"/>
+ *         &lt;element name="contrast" type="{http://www.monitor.com}contrastDeclare" minOccurs="0"/>
+ *         &lt;element name="brightness" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" minOccurs="0"/>
+ *         &lt;element name="responseTime" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" minOccurs="0"/>
+ *         &lt;element name="screenColor" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="screenView" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" minOccurs="0"/>
+ *         &lt;element name="hubs" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="electricalCapacity" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" minOccurs="0"/>
+ *         &lt;element name="weight" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="brandName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="storeName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="imgURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *       &lt;/all>
  *       &lt;attribute name="id" type="{http://www.monitor.com}IDDeclare" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -46,63 +49,46 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "model",
-    "price",
-    "description",
-    "url",
-    "screenBackground",
-    "resolution",
-    "contrast",
-    "brightness",
-    "responseTime",
-    "screenColor",
-    "screenView",
-    "hubs",
-    "electricalCapacity",
-    "weight"
+
 })
 @XmlRootElement(name = "Monitor")
 public class Monitor {
-    
+
     @XmlElement(required = true)
     protected String model;
     @XmlElement(required = true)
     protected String price;
-    @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true)
     protected String url;
-    @XmlElement(required = true)
     protected String screenBackground;
-    @XmlElement(required = true)
     protected String resolution;
-    @XmlElement(required = true)
     protected String contrast;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger brightness;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger responseTime;
-    @XmlElement(required = true)
     protected String screenColor;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger screenView;
-    @XmlElement(required = true)
     protected String hubs;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger electricalCapacity;
-    protected long weight;
+    protected String weight;
+    @XmlElement(required = true)
+    protected String brandName;
+    @XmlElement(required = true)
+    protected String storeName;
+    @XmlElement(required = true)
+    protected String imgURL;
     @XmlAttribute(name = "id")
-    protected Long id;
+    protected Float id;
+
+    public Monitor() {
+    }
 
     public Monitor(String model) {
         this.model = model;
-    }
-
-    public Monitor() {
     }
 
     /**
@@ -420,17 +406,97 @@ public class Monitor {
     /**
      * Gets the value of the weight property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public long getWeight() {
+    public String getWeight() {
         return weight;
     }
 
     /**
      * Sets the value of the weight property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setWeight(long value) {
+    public void setWeight(String value) {
         this.weight = value;
+    }
+
+    /**
+     * Gets the value of the brandName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBrandName() {
+        return brandName;
+    }
+
+    /**
+     * Sets the value of the brandName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBrandName(String value) {
+        this.brandName = value;
+    }
+
+    /**
+     * Gets the value of the storeName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getStoreName() {
+        return storeName;
+    }
+
+    /**
+     * Sets the value of the storeName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setStoreName(String value) {
+        this.storeName = value;
+    }
+
+    /**
+     * Gets the value of the imgURL property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    /**
+     * Sets the value of the imgURL property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setImgURL(String value) {
+        this.imgURL = value;
     }
 
     /**
@@ -438,10 +504,10 @@ public class Monitor {
      * 
      * @return
      *     possible object is
-     *     {@link Long }
+     *     {@link Float }
      *     
      */
-    public Long getId() {
+    public Float getId() {
         return id;
     }
 
@@ -450,10 +516,10 @@ public class Monitor {
      * 
      * @param value
      *     allowed object is
-     *     {@link Long }
+     *     {@link Float }
      *     
      */
-    public void setId(Long value) {
+    public void setId(Float value) {
         this.id = value;
     }
 

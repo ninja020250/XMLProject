@@ -5,14 +5,10 @@
  */
 package cuonghn.servlet;
 
-import cuonghn.crawler.CPNCrawler;
-import cuonghn.crawler.MaccenterCrawler;
-import cuonghn.parseData.Internet;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author nhatc
  */
-public class NullServlet extends HttpServlet {
+@WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
+public class SearchServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,9 +34,9 @@ public class NullServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            response.sendRedirect("Home.jsp");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        } finally {
+            out.close();
         }
     }
 
