@@ -22,7 +22,7 @@ public class ImageUtils {
         try {
             imageURL = imageURL.replaceAll(" ", "%20lcd%20");
             InputStream in = new URL(imageURL).openStream();
-            Files.copy(in, Paths.get(filePath));
+            Files.copy(in, Paths.get(TextUtilities.deAccent(filePath)));
             return true;
         } catch (Exception e) {
             System.out.println("loi chuyen doi link anh");
@@ -32,14 +32,10 @@ public class ImageUtils {
     }
 
     public static String getNameImageFromUrl(String url) {
-        String fileName = "";
-        try {
-            fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
 
-        } catch (Exception e) {
+        String fileName = url.substring(url.lastIndexOf('/') + 1);
 
-        }
-//        fileNameWithoutExtn = fileName.substring(0, fileName.lastIndexOf('.'));
+//        fileName = fileName.replaceAll(".", "");
         return fileName;
     }
 }

@@ -6,6 +6,7 @@
 package cuonghn.crawler;
 
 import cuonghn.dao.StoreDAO;
+import cuonghn.jaxb.Store;
 import cuonghn.utils.Constant;
 import cuonghn.utils.ImageUtils;
 import cuonghn.utils.TextUtilities;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
@@ -23,6 +26,7 @@ import javax.imageio.ImageIO;
 public class Mastercrawler {
 
     private String realPath;
+    private List<Store> stores = new ArrayList<>();
 
     public Mastercrawler(String realPath) {
         this.realPath = realPath;
@@ -45,9 +49,25 @@ public class Mastercrawler {
 //        String result = TextUtilities.getByExpression(src, expression);
 //        System.out.println(result);
         StoreDAO dao = new StoreDAO();
-        dao.clearDB();
+
         BenCrawler BenCrawler = new BenCrawler(realPath);
-        BenCrawler.run();
+        Store benStoreValidated = BenCrawler.run();
+        if (benStoreValidated != null) {
+            stores.add(benStoreValidated);
+        }
+        CPNCrawler cpn = new CPNCrawler(realPath);
+        Store cpnStoreValidated = cpn.run();
+        if (cpnStoreValidated != null) {
+            stores.add(cpnStoreValidated);
+        }
+        if (stores.size() > 0) {
+            dao.clearDB();
+            for (int i = 0; i < stores.size(); i++) {
+                System.out.println("start insert " + stores.get(i).getStoreName() + "to DB");
+                dao.masterInsertStore(stores.get(i));
+            }
+        }
+
     }
 
 }

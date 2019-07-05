@@ -15,4 +15,6 @@ public class Constant {
 //    public static final String IMAGE_FOLDER = "imgs/products/";
     public static final String PROTOCOL = "https:";
     public static final String IMAGE_FOLDER = "/web/imgs/products/";
+      public static final String IMAGE_FOLDER_SHOWING = "imgs/products/";
+    public static final String VALIDATED_FOLDER = "WEB-INF/validate/";
 }

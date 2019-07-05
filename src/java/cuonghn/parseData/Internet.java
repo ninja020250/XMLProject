@@ -77,6 +77,51 @@ public class Internet {
         }
     }
 
+    public static String parseListHTMLToStringCPN(String uri) {
+//        declare variable
+        Writer writer = null;
+        boolean check = false;
+        int count = 1;
+        int countDiv = 1;
+        int countUl = 0;
+        int coutLi = 0;
+//       end declare variable
+        try {
+            // for hết toàn bộ uri mà đã định danh sẵn để đọc nội dung từng uri đó ra thành file html
+
+            //khai báo connection với phiên bản chrome sử dụng để đọc từng line của html ra đưa vô inputLine
+            URL url = new URL(uri);
+            URLConnection con = url.openConnection();
+            con.addRequestProperty("User-agent", "Chrome/61.0.3163.100 (compatible; MSIE 6.0; Windows NT 5.0");
+            InputStream is = con.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String inputLine;
+            String htmlContent = "";
+            boolean begin = false, end = false;
+            while ((inputLine = br.readLine().trim()) != null) {
+                if (inputLine.contains("<body>")) {
+                    begin = true;
+                    htmlContent = htmlContent + inputLine;
+                    continue;
+                }
+                if (begin && !end) {
+                    if (inputLine.contains("</body>")) {
+
+                        break;
+                    }
+                    htmlContent = htmlContent + inputLine;
+                }
+            }
+            String welformedHTML = TextUtilities.refineHtmlCPN(htmlContent); //welform html truoc khi parse 
+            br.close();
+            is.close();
+            return welformedHTML;
+        } catch (Exception ex) {
+            Logger.getLogger(Internet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public static String parseListHTMLToString(String uri) {
 //        declare variable
         Writer writer = null;
@@ -124,7 +169,7 @@ public class Internet {
 
     public static String parseStringToUTF8Uri(String uri) throws UnsupportedEncodingException {
         String[] arr = uri.split("\\=");
-        String url = arr[0] +"="+ URLEncoder.encode(arr[1], "UTF-8");
+        String url = arr[0] + "=" + URLEncoder.encode(arr[1], "UTF-8");
         return url;
     }
 

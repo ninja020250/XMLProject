@@ -55,7 +55,7 @@ public class ProductDAO {
                     String resolution = resultSet.getString("resolution");
                     String brandName = resultSet.getString("brand_name");
                     String description = resultSet.getString("description");
-                    String imgURL = resultSet.getString("imgURL");
+                    String imgURL = resultSet.getString("imageURL");
                     Monitor mon = new Monitor(productModel);
                     mon.setUrl(productUrl);
                     mon.setPrice(productprice);

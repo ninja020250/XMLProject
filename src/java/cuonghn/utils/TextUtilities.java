@@ -8,6 +8,7 @@ package cuonghn.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import cuonghn.wellformer.SyntaxChecker;
+import java.text.Normalizer;
 
 /**
  *
@@ -22,10 +23,28 @@ public class TextUtilities {
         return src;
     }
 
-       public static String removeWhiteSpace(String src) {
+    public static String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
+
+    public static String stringTOUTF8(String src) {
+        try {
+            byte[] ptext = src.getBytes("UTF8");
+            src = new String(ptext, "UTF8");
+            return src;
+        } catch (Exception e) {
+            System.out.println("parse UTF-8 error");
+        }
+        return "";
+    }
+
+    public static String removeWhiteSpace(String src) {
         src = src.replace(" ", "");
         return src;
     }
+
     public static String removeSymbols(String src) {
         src = src.replace("•", "");
         src = src.replace("~", "");
@@ -36,6 +55,18 @@ public class TextUtilities {
     public static String refineHtml(String src) {
         src = getBody(src);
         src = removeMiscellaneousTags(src);
+
+        SyntaxChecker xmlSyntaxChecker = new SyntaxChecker();
+        src = xmlSyntaxChecker.check(src);
+
+        //crop one more time
+        src = getBody(src);
+        return src;
+    }
+
+    public static String refineHtmlCPN(String src) {
+        src = getBody(src);
+        src = removeMiscellaneousTagsSpecialForCPN(src);
 
         SyntaxChecker xmlSyntaxChecker = new SyntaxChecker();
         src = xmlSyntaxChecker.check(src);
@@ -68,6 +99,34 @@ public class TextUtilities {
         if (matcher.find()) {
             result = matcher.group(0);
         }
+
+        return result;
+    }
+
+    public static String removeMiscellaneousTagsSpecialForCPN(String src) {
+        String result = src;
+
+        //Remove all <script> tags
+        String expression = "<script.*?</script>";
+        result = result.replaceAll(expression, "");
+
+        expression = "<noscript.*?</noscript>";
+        result = result.replaceAll(expression, "");
+//        
+        // remove alt>
+        expression = "alt=\".*?\"";
+        result = result.replaceAll(expression, "");
+
+        //Remove all comments
+        expression = "<!--.*?-->";
+        result = result.replaceAll(expression, "");
+
+        //Remove all <script> tags
+        expression = "&nbsp;?";
+        result = result.replaceAll(expression, "");
+
+        expression = "&amp;?";
+        result = result.replaceAll(expression, "");
 
         return result;
     }

@@ -3,17 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/dao/ProductDAO.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/utils/TextUtilities.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/parseData/Internet.java</file>
             <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/utils/ImageUtils.java</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/servlet/CrawlServlet.java</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/build/web/WEB-INF/validate/BenInvalid.xml</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/web/styleSheet/productList.xsl</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/web/css/homePage.css</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/dao/StoreDAO.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/jaxb/Brand.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/crawler/CPNCrawler.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/build/web/WEB-INF/validate/cpnvalid.xml</file>
             <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/crawler/Mastercrawler.java</file>
+            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/dao/StoreDAO.java</file>
             <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/crawler/BenCrawler.java</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/src/java/cuonghn/utils/Constant.java</file>
-            <file>file:/D:/cn8/XML/project/XMLProject/build/web/WEB-INF/validate/Benvalid.xml</file>
         </group>
     </open-files>
 </project-private>

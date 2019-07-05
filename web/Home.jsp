@@ -17,7 +17,9 @@
 
     </head>
     <body>
-
+        <script type="text/javascript" src="./js/home.js">
+         
+        </script>
         <%--<x:parse var="doc" doc="${requestScope.PRODUCTS}" scope="session"/>--%>
         <script>
             products = '${requestScope.PRODUCTS}';

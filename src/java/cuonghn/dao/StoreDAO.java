@@ -80,12 +80,13 @@ public class StoreDAO {
         try {
             connection = DBUtil.makeDBConnection();
             if (connection != null) {
-                String sql = "INSERT INTO store_product_tbl (website, productModel, url, price) VALUES (?,?,?,?);";
+                String sql = "INSERT INTO store_product_tbl (website, productModel, url, price, imageURL) VALUES (?,?,?,?,?);";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, store.getHomeUrl());
                 preparedStatement.setString(2, product.getModel());
                 preparedStatement.setString(3, product.getUrl());
                 preparedStatement.setString(4, product.getPrice());
+                preparedStatement.setString(5, product.getImgURL());
                 int result = preparedStatement.executeUpdate();
                 if (result > 0) {
                     return true;
@@ -134,7 +135,7 @@ public class StoreDAO {
             if (connection != null) {
                 String sql = "INSERT INTO product_tbl (model, description,  screenBackground, resolution, contrast,"
                         + " brightness, responseTime, screenColor, screenView, hubs,"
-                        + "electricalCapacity, weight, brand_name,imgURL) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        + "electricalCapacity, weight, brand_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //                String sql = "INSERT INTO product_tbl (model, brand_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, product.getModel());
@@ -166,7 +167,6 @@ public class StoreDAO {
                 }
                 preparedStatement.setString(12, product.getWeight());
                 preparedStatement.setString(13, dependency.getBrandName());
-                preparedStatement.setString(14, product.getImgURL());
 //                preparedStatement.setString(1, product.getModel());
 //                preparedStatement.setString(2, dependency.getBrandName());
                 int result = preparedStatement.executeUpdate();
@@ -179,7 +179,9 @@ public class StoreDAO {
             if (e.getMessage().contains("duplicate key")) {
                 System.out.println("Error: This product existed: " + product.getUrl());
                 System.out.println("Error: This product existed Model: " + product.getModel());
+                return true;
             } else {
+                System.out.println("khong insert duoc product nay : " + product.getModel());
                 e.printStackTrace();
             }
         } finally {

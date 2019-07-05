@@ -90,25 +90,27 @@ public class BenCrawler {
         System.out.println("start validate ... ");
         Store store = unmarshallingStore(realPath + "schema/test.xml");
         Store storeInvalid = validateStore(store);
-        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/Benvalid.xml", store);
-        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/BenInvalid.xml", storeInvalid);
+        XMLUtilities.saveToXML(this.realPath + Constant.VALIDATED_FOLDER + "Benvalid.xml", store);
+        XMLUtilities.saveToXML(this.realPath + Constant.VALIDATED_FOLDER + "BenInvalid.xml", storeInvalid);
         StoreDAO dao = new StoreDAO();
         System.out.println("start insert to DB");
         dao.masterInsertStore(store);
     }
 
-    public void validateAndInsertDB(Store store) {
+    public Store validateStoreToInsertDB(Store store) {
         System.out.println("start validate ... ");
 //        Store store = unmarshallingStore(realPath + "schema/test.xml");
         Store storeInvalid = validateStore(store);
-        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/Benvalid.xml", store);
-        XMLUtilities.saveToXML(this.realPath + "WEB-INF/validate/BenInvalid.xml", storeInvalid);
-        StoreDAO dao = new StoreDAO();
-        System.out.println("start insert to DB");
-        dao.masterInsertStore(store);
+        XMLUtilities.saveToXML(this.realPath + Constant.VALIDATED_FOLDER + "Benvalid.xml", store);
+        XMLUtilities.saveToXML(this.realPath + Constant.VALIDATED_FOLDER + "BenInvalid.xml", storeInvalid);
+        return store;
+//        StoreDAO dao = new StoreDAO();
+//        System.out.println("start insert to DB");
+//        dao.masterInsertStore(store);
     }
 
-    public void run() {
+    public Store run() {
+        Store storeValidated = null;
         if (configReady) {
             try {
                 System.out.println("Crawling.....");
@@ -146,9 +148,9 @@ public class BenCrawler {
                 } // end if uri categories
                 System.out.println("Crawler is done his task 0~0");
 
-                XMLUtilities.saveToXML(this.realPath + "WEB-INF/HTMLPAGE/productBen.xml", store);
+                XMLUtilities.saveToXML(this.realPath + "WEB-INF/HTMLPAGE/productCPN.xml", store);
                 System.out.println("total product: " + totalproduct);
-                validateAndInsertDB(store);
+                storeValidated = validateStoreToInsertDB(store);
             } catch (Exception e) {
                 System.out.println("Error");
                 e.printStackTrace();
@@ -156,6 +158,7 @@ public class BenCrawler {
         } else {
             System.out.println("Error From Config File");
         }
+        return storeValidated;
     }
 
     private Store validateStore(Store storeTolavidate) {
@@ -323,13 +326,7 @@ public class BenCrawler {
                 price = TextUtilities.getOnlyNumber(price);// cắt hết chỉ lấy số thôi
             }
             // end lấy giá  
-            exp = "//*[@class='pro-image-large']//img/@src";
-            imageURL = (String) xpath.evaluate(exp, doc, XPathConstants.STRING);
-            String imageName = ImageUtils.getNameImageFromUrl(imageURL);
-            String filePath = new File(realPath).getParentFile().getAbsoluteFile().getParent();
-            boolean isDownloaded = ImageUtils.saveImageByURL(filePath + Constant.IMAGE_FOLDER + imageName, Constant.PROTOCOL + imageURL); //lấy ảnh 
-            System.out.println("lay anh: " + isDownloaded);
-            // lấy ảnh
+
             // lấy description
             exp = "//*[@class='pro-detail']/h1";
             String description = (String) xpath.evaluate(exp, doc, XPathConstants.STRING);
@@ -337,6 +334,14 @@ public class BenCrawler {
             if (monitor == null) {
                 monitor = new Monitor(model);
             }
+            // lấy ảnh
+            exp = "//*[@class='pro-image-large']//img/@src";
+            imageURL = (String) xpath.evaluate(exp, doc, XPathConstants.STRING);
+            String imageName = ImageUtils.getNameImageFromUrl(imageURL);
+            String filePath = new File(realPath).getParentFile().getAbsoluteFile().getParent();
+            boolean isDownloaded = ImageUtils.saveImageByURL(filePath + Constant.IMAGE_FOLDER + imageName, Constant.PROTOCOL + imageURL); //lấy ảnh 
+            System.out.println("lay anh: " + isDownloaded);
+            // end lấy ảnh
             monitor.setBrandName(brandName);
             monitor.setUrl(ProductUri); // 
             monitor.setScreenBackground(screenBackground); //  loại màn hình
@@ -357,7 +362,7 @@ public class BenCrawler {
             if (!electricalCapacity.equals("")) {
                 monitor.setElectricalCapacity(new BigInteger(electricalCapacity));
             }
-            monitor.setImgURL(filePath + Constant.IMAGE_FOLDER + imageName);
+            monitor.setImgURL(Constant.IMAGE_FOLDER_SHOWING + imageName);
             monitor.setWeight(weight);
             monitor.setStoreName(currentStore);
             monitor.setPrice(price);
@@ -367,7 +372,7 @@ public class BenCrawler {
     }
 
     public void getLinkMonitorFromCategory() throws SAXException, ParserConfigurationException, IOException, XPathExpressionException {
-        String wellformerHomePage = Internet.parseListHTMLToString("https://ben.com.vn/");
+        String wellformerHomePage = Internet.parseListHTMLToString(host);
         Document doc = ParserDom.getDocumentFromStringXML(wellformerHomePage);
 
         XPath xpath = XMLUtilities.createXPath();
